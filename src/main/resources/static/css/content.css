@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+/* ページ全体の背景 */
+.page {
+    min-height: 100vh;  /*画面の高さ100%分は最低でも確保する*/
+    background-color: #f4f6fb; 
+    padding: 40px 0;
+}
+
+/* 中央のコンテンツ */
+.container {
+    max-width: 800px;/* 横幅を制限 */
+    margin: 0 auto;/* 中央寄せ */
+    padding: 24px 32px;      
+    background: #ffffff;     
+    border-radius: 12px;
+}
+
+/*ｈ１レイアウト*/
+h1 {
+  padding: 0.25em 0.5em;
+  color: #494949;
+  background: transparent;
+  border-left: solid 5px #7db4e6;
+}
+
+/*フォームレイアウト*/
+.form {
+    width: 50%;
+    padding: 12px 16px;
+    border: 2px solid #C0C0C0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease; /*滑らかに変化する*/
+    background: #ffffff;
+}
+
+/*入力中*/
+.form:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px); /*浮く感じ*/
+}
+
+/*フォームとボタンの位置*/
+.area {
+    display: flex;
+    gap: 12px;         
+    margin-top: 30px; 
+	justify-content: space-around;
+}
+
+/* ボタン共通デザイン */
+.button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer; /*ポインタに乗せると指マークになる*/
+    background: #7db4e6;
+    color: #000040;
+    transition: all 0.2s ease;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /*立体感*/
+
+}
+
+/* ホバー時 */
+.button:hover {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0.85; /*透明度*/
+    transform: translateY(-1px);
+}
+
+/*押下時*/
+.button:active {
+    transform: translateY(1px);/*沈む感じ*/
+}
+
+/*結果メッセージ*/
+.result-area {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #C0C0C0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #000000;
+}
+
+/*備品一覧*/
+
+.header {
+    display: flex;
+    border-bottom: 2px solid #000;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 6px 0;
+}
+
+span {
+  	display: inline-block;           
+}
+
+.id{
+	width: 35px;
+}
+
+.name{
+	width: 230px;
+}
+
+.rental{
+	width: 80px;
+	text-align: center;
+}
+
+.num{
+	width: 100px;
+	text-align: center;
+}
