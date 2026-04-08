@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class CommonDB {
 	
@@ -67,6 +68,21 @@ public class CommonDB {
 			e.printStackTrace();
 		}
 		return datalist;
+	}
+
+	// 文字数チェック
+	public int nameCheck(String name) {
+		int length = name.length();
+		int nameCheck = BihinConst.RESULT_NG;
+		
+		try {
+			if(length > BihinConst.NAME_LENGTH) {
+				nameCheck = BihinConst.RESULT_NUM;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return nameCheck;
 	}
 }
 

@@ -36,11 +36,15 @@ public class ControllerHome {
 		int result = service.register(name);
 			
 		// 状況に応じてメッセージを設定する
-		if(result == 1) {
+		if(result == BihinConst.RESULT_OK) {
 			String message = "登録が完了しました";
 			model.addAttribute("message", message);
 		
-		} else if(result == 9) {
+		} else if(result == BihinConst.RESULT_NUM) {
+			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.RESULT_ERROR) {
 			String message = "予期せぬエラーが発生しました";
 			model.addAttribute("message", message);
 		}
@@ -63,15 +67,19 @@ public class ControllerHome {
 		int result = service.rental(name);
 		
 		// 状況に応じてメッセージを設定する
-		if(result == 1) {
+		if(result == BihinConst.RESULT_OK) {
 			String message = "貸出しました";
 			model.addAttribute("message", message);
 			
-		}else if(result == 0) {
+		} else if(result == BihinConst.RESULT_NG) {
 			String message = "貸出せません";
 			model.addAttribute("message", message);
+		
+		} else if(result == BihinConst.RESULT_NUM) {
+			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
 			
-		}else if(result == 9) {
+		} else if(result == BihinConst.RESULT_ERROR) {
 			String message = "予期せぬエラーが発生しました";
 			model.addAttribute("message", message);
 		}
@@ -94,15 +102,19 @@ public class ControllerHome {
 		int result = service.bihinReturn(name);
 		
 		// 状況に応じてメッセージを設定する
-		if(result == 1) {
+		if(result == BihinConst.RESULT_OK) {
 			String message = "返却しました";
 			model.addAttribute("message", message);
 			
-		}else if(result == 0) {
+		} else if(result == BihinConst.RESULT_NG) {
 			String message = "返却できません";
 			model.addAttribute("message", message);
 			
-		}else if(result == 9) {
+		} else if(result == BihinConst.RESULT_NUM) {
+			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.RESULT_ERROR) {
 			String message = "予期せぬエラーが発生しました";
 			model.addAttribute("message", message);
 		}
@@ -125,15 +137,19 @@ public class ControllerHome {
 		int result = service.delete(name);
 		
 		// 状況に応じてメッセージを設定する
-		if(result == 1) {
+		if(result == BihinConst.RESULT_OK) {
 			String message = "削除しました";
 			model.addAttribute("message", message);
 			
-		}else if(result == 0) {
+		} else if(result == BihinConst.RESULT_NG) {
 			String message = "削除できません";
 			model.addAttribute("message", message);
 			
-		}else if(result == 9) {
+		} else if(result == BihinConst.RESULT_NUM) {
+			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.RESULT_ERROR) {
 			String message = "予期せぬエラーが発生しました";
 			model.addAttribute("message", message);
 		}
