@@ -18,4 +18,11 @@ public class BihinConst {
 	// 例外エラーが発生した場合
 	public static final int RESULT_ERROR = 9;
 	
+	
+	// 昇順の場合
+	public static final String SORT_ASC = "0";
+	
+	// 降順の場合
+	public static final String SORT_DESC = "1";
+	
 }

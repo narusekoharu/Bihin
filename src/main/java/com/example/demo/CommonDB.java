@@ -46,12 +46,8 @@ public class CommonDB {
 			
 		try{
 				Connection con = databaseConnection();
-				String sqlJoin = "SELECT bihininfo.id, bihininfo.name, bihininfo.rental, usenum.num "
-								+ "FROM bihininfo "
-								+ "INNER JOIN usenum "
-								+ "ON bihininfo.id = usenum.id";
 					
-				PreparedStatement tb = con.prepareStatement(sqlJoin);
+				PreparedStatement tb = con.prepareStatement(SqlConst.SQL_INNER_JOIN);
 					
 				ResultSet rs = tb.executeQuery();
 					

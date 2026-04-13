@@ -19,10 +19,10 @@
 		
 		<!--登録・貸出・返却・削除ボタン-->
 		
-		<button type="submit" class="button" name="action" value="register" >登録</button>
-		<button type="submit" class="button" name="action" value="rental" >貸出</button>
-		<button type="submit" class="button" name="action" value="bihinReturn" >返却</button>
-		<button type="submit" class="button" name="action" value="delete" >削除</button>
+		<button type="submit" class="button" name ="register">登録</button>
+		<button type="submit" class="button" name="rental">貸出</button>
+		<button type="submit" class="button" name="bihinReturn">返却</button>
+		<button type="submit" class="button" name="delete">削除</button>
 		</div><br>
 		
 		<!--メッセージ表示-->
@@ -31,13 +31,14 @@
 		
 		<h3>備品一覧</h3>
 		
-		<div class="header">
-		<span class="id">id</span>
-		<span class="name">名称</span>
-		<span class="rental">状態</span>
-		<span class="num">使用回数</span>
-		</div>
+		<button type="submit" class ="sort_button" name="sort" value="id"formnovalidate>id</button>
+		<button type="submit" class ="sort_button" name="sort" value="bihinName" formnovalidate>名称</button>
+		<button type="submit" class ="sort_button" name="sort" value="bihinRental" formnovalidate>状態</button>
+		<button type="submit" class ="sort_button" name="sort" value="bihinUse" formnovalidate>使用回数</button>
 		
+		<input type="hidden" name="hidden_nowSort" th:value="${nowSort}">
+		<input type="hidden" name="hidden_beforeSort" th:value="${beforeSort}">
+
 		<div class="row" th:each="list : ${datalist}">
 			<span class="id" th:text="${list.id}"></span>
 		    <span class="name" th:text="${list.name}"></span>

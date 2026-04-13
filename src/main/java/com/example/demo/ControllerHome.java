@@ -23,12 +23,12 @@ public class ControllerHome {
 	public String start(Model model) {
 		
 		model.addAttribute("datalist", db.bihinList());
-
+		
 		return "home";
 	}
 	
 	// 登録処理
-	@PostMapping(path = "/home", params = "action=register")
+	@PostMapping(path = "/home", params = "register")
 	public String register(@RequestParam("name") String name,
 						   Model model) {
 		
@@ -59,7 +59,7 @@ public class ControllerHome {
 		}
 	
 	// 貸出処理
-	@PostMapping(path = "/home", params = "action=rental")
+	@PostMapping(path = "/home", params = "rental")
 	public String rental(@RequestParam("name") String name,
 						 Model model) {
 		
@@ -94,7 +94,7 @@ public class ControllerHome {
 	}
 	
 	// 返却処理
-	@PostMapping(path = "/home", params = "action=bihinReturn")
+	@PostMapping(path = "/home", params = "bihinReturn")
 	public String bihinReturn(@RequestParam("name") String name,
 							  Model model) {
 		
@@ -129,7 +129,7 @@ public class ControllerHome {
 	}
 	
 	// 削除処理
-	@PostMapping(path = "/home", params = "action=delete")
+	@PostMapping(path = "/home", params = "delete")
 	public String delete(@RequestParam("name") String name,
 						 Model model) {
 		
@@ -161,7 +161,46 @@ public class ControllerHome {
 		db.databaseClose();
 				
 		return "home";
+	}
+	
+	// 並び替え処理
+	@PostMapping(path = "/home", params = "sort")
+	public String sortBihin(@RequestParam("hidden_nowSort") String nowSort,
+							@RequestParam("hidden_beforeSort") String beforeSort,
+							@RequestParam("sort") String sort, 
+							Model model) {
 		
+		// 前回と同じボタンだった場合
+		if(sort.equals(beforeSort)) {
+					
+			// nowSortの状態を変える
+			if(BihinConst.SORT_ASC.equals(nowSort)) {
+				nowSort = BihinConst.SORT_DESC;
+			}else if(BihinConst.SORT_DESC.equals(nowSort)) {
+				nowSort = BihinConst.SORT_ASC;
+			}
+			
+		// 初回idボタンだった場合
+		}else if(sort.equals("id") && nowSort.equals("")) {
+			nowSort = BihinConst.SORT_ASC;
+		
+		// 初回id以外の初回ボタンだった場合	
+		}else {
+			nowSort = BihinConst.SORT_DESC;
+		}
+		
+		// 次回用にnowSortを設定する
+		model.addAttribute("nowSort", nowSort);
+		
+		// 次回用にbeforSortを設定する
+		model.addAttribute("beforeSort", beforeSort = sort);
+		
+		//並び替え処理を呼び出し、リストを受け取り設定する
+		model.addAttribute("datalist", service.sortColumn(sort, nowSort));
+		
+		// DBを閉じる
+		db.databaseClose();	
+		return "home";
 	}
 }
 
