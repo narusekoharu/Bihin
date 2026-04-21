@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link th:href="@{/css/content.css}" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>備品検索</title>
+</head>
+
+<body>
+
+	<div class="page">
+		<div class="container">
+
+			<main th:object="${searchData}">
+				<form action="/search" method="post">
+					<h1>備品検索</h1>
+
+					<!--ID入力-->
+					<div class="form-row">
+						<label>ID　:　　　</label>
+						<input type="text" name="searchId" class="form search-form-id" th:field="*{searchId}">
+					</div>
+
+					<!--備品名入力-->
+					<div class="form-row">
+						<label>備品名 ：　</label>
+						<input type="text" name="searchName" class="form search-form" th:field="*{searchName}">
+					</div>
+
+					<!--状態チェックボックス-->
+					<div class="form-row">
+						<label>状態 :　　　
+							<input type="checkbox" name="searchRentalTrue"> 貸出可能
+						</label>
+						<label>
+							<input type="checkbox" name="searchRentalFalse"> 貸出中
+						</label>
+					</div>
+
+					<!--使用回数ラジオボックス-->
+					<div class="form-row">
+						<label>使用回数 ：</label>
+							<input type="text" name="searchUseNum" class="form search-form-use" th:field="*{searchUseNum}">
+						回</label>
+						<input type="radio" name="searchUseRadio" value="up" th:field="*{searchUseRadio}">以上
+						<input type="radio" name="searchUseRadio" value="down" th:field="*{searchUseRadio}">以下
+						
+					</div>
+
+					<!--検索ボタン-->
+					<div class="center">
+						<button type="submit" class="button" name="searchButton">検索</button>
+					</div>
+
+					<!--メッセージ表示-->
+
+					<script th:inline="javascript">
+
+						// アラートメッセージを結合させる
+						let alertMessage = "\n";
+
+						let message_id = /*[[${message_id}]]*/ "";
+						let message_id_num = /*[[${message_id_num}]]*/ "";
+						let message_name = /*[[${message_name}]]*/ "";
+						let message_use = /*[[${message_use}]]*/ "";
+						let message_use_num = /*[[${message_use_num}]]*/ "";
+						let message_use_nopush = /*[[${message_use_nopush}]]*/ "";
+						let message_use_push = /*[[${message_use_push}]]*/ "";
+
+						let list_message = /*[[${list_message}]]*/ "";
+
+						if (message_id != null) {
+							alertMessage = message_id + "\n";
+						}
+						if (message_id_num != null) {
+							alertMessage = alertMessage + message_id_num + "\n";
+						}
+						if (message_name != null) {
+							alertMessage = alertMessage + message_name + "\n";
+						}
+						if (message_use != null) {
+							alertMessage = alertMessage + message_use + "\n";
+						}
+						if (message_use_num != null) {
+							alertMessage = alertMessage + message_use_num + "\n";
+						}
+						if (message_use_nopush != null) {
+							alertMessage = alertMessage + message_use_nopush + "\n";
+						}
+						if (message_use_push != null) {
+							alertMessage = alertMessage + message_use_push + "\n";
+						}
+
+						if (list_message != null) {
+							alertMessage = alertMessage + list_message + "\n";
+						}
+
+						// "\n"ではない場合、alertを出す
+						if (alertMessage != "\n") {
+							alert(alertMessage)
+						}
+
+					</script>
+
+					<!--検索結果-->
+					<h3 th:if="${datalist != null and datalist.size() > 0}">検索結果</h3>
+					<div class="search-area" th:if="${datalist != null and datalist.size() > 0}">
+						<p class="result-id">ID</p>
+						<p class="result-name">名称</p>
+						<p class="result-rental">状態</p>
+						<p class="result-num">使用回数</p>
+					</div>
+
+					<div class="row" th:each="list : ${datalist}">
+						<span class="id" th:text="${list.id}"></span>
+						<span class="name" th:text="${list.name}"></span>
+						<span class="rental" th:text="${list.rental ? '貸出可能' : '貸出中'}"></span>
+						<span class="num" th:text="${list.num + '回'}"></span>
+					</div>
+
+					<!--メッセージ表示-->
+					<p class="result-area" th:if="${list_message != null}" th:text="${list_message}"></p><br>
+
+					<!--戻るボタン-->
+					<div class="right">
+						<button type="button" onclick="location.href='http://localhost:8080/home'" name="back"
+							class="button search-button">戻る</button><br>
+					</div>
+				</form>
+			</main>
+
+		</div>
+	</div>
+
+</body>
+
+</html>

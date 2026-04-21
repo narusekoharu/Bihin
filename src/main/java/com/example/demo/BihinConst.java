@@ -3,17 +3,32 @@ package com.example.demo;
 // 定数一覧クラス
 public class BihinConst {
 	
-	// 処理可能な結果
+	// 処理可能
 	public static final int RESULT_OK = １;
 	
-	// 処理不可能な結果
-	public static final int RESULT_NG = ０;
+	// 処理不可能
+	public static final int RESULT_NG = 0;
 	
-	// 30文字より長い入力だった結果
-	public static final int RESULT_NUM = 3;
+	// 入力チェック成功フラグ
+	public static final int INPUT_OK = 2;
 	
-	// 30文字
+	// 入力チェック失敗フラグ
+	public static final int INPUT_NG = 3;
+	
+	// 登録チェック成功フラグ
+	public static final int REGISTER_OK = 4;
+	
+	// 登録チェック成功フラグ
+	public static final int REGISTER_NG = 5;
+	
+	// 備品名30文字
 	public static final int NAME_LENGTH = 30;
+	
+	// ID3桁
+	public static final int ID_LENGTH = 3;
+	
+	// 使用回数3桁
+	public static final int USE_LENGTH = 3;
 	
 	// 例外エラーが発生した場合
 	public static final int RESULT_ERROR = 9;

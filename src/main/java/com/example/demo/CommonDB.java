@@ -66,19 +66,95 @@ public class CommonDB {
 		return datalist;
 	}
 
-	// 文字数チェック
+	// 備品名文字数チェック
 	public int nameCheck(String name) {
-		int length = name.length();
-		int nameCheck = BihinConst.RESULT_NG;
+		int nameCheck = BihinConst.INPUT_OK;
 		
 		try {
-			if(length > BihinConst.NAME_LENGTH) {
-				nameCheck = BihinConst.RESULT_NUM;
+			if(name.length() > BihinConst.NAME_LENGTH) {
+				nameCheck = BihinConst.INPUT_NG;
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return nameCheck;
 	}
+	
+	// ID文字数チェック
+	public int idCheck(String id) {
+		int idCheck = BihinConst.INPUT_OK;
+		
+		try {
+			if(id.length() > BihinConst.ID_LENGTH) {
+				idCheck = BihinConst.INPUT_NG;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return idCheck;
+	}
+	
+	// 使用回数文字数チェック
+	public int useCheck(String num) {
+		int useCheck = BihinConst.INPUT_OK;
+		
+		try {
+			if(num.length() > BihinConst.USE_LENGTH) {
+				useCheck = BihinConst.INPUT_NG;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return useCheck;
+	}
+	
+	// ID.数字チェック
+	public int idNumCheck(String id) {
+		int idNumCheck = BihinConst.INPUT_OK;
+		
+		for(int i= 0; i < id.length(); i++) {
+			if(!Character.isDigit(id.charAt(i))) {
+				idNumCheck = BihinConst.INPUT_NG;
+			}
+		}
+		return idNumCheck;
+	}
+	
+	// 使用回数.数字チェック
+	public int useNumCheck(String num) {
+		int useNumCheck = BihinConst.INPUT_OK;
+		
+		for(int i= 0; i < num.length(); i++) {
+			if(!Character.isDigit(num.charAt(i))) {
+				useNumCheck = BihinConst.INPUT_NG;
+			}
+		}
+		return useNumCheck;
+	}
+	
+	// 備品登録されているかのチェック
+	public int registerCheck(String name) {
+		int registerCheck = BihinConst.REGISTER_OK;
+		try {
+			// DBを繋げる
+			Connection con = databaseConnection();
+			
+			// 備品登録されているかSQLで調べる
+			PreparedStatement ps = con.prepareStatement(SqlConst.SQL_REGISTER);
+			ps.setString(SqlConst.NAME_COLUMN, name);
+			ResultSet rs = ps.executeQuery();
+
+			if (!rs.next()) {
+				registerCheck = BihinConst.REGISTER_NG;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return registerCheck;
+	}
+	
+	
+	
 }
 

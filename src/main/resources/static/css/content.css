@@ -18,10 +18,10 @@
 
 /*ｈ１レイアウト*/
 h1 {
-  padding: 0.25em 0.5em;
-  color: #494949;
-  background: transparent;
-  border-left: solid 5px #7db4e6;
+  	padding: 0.25em 0.5em;
+  	color: #494949;
+  	background: transparent;
+  	border-left: solid 5px #7db4e6;
 }
 
 /*フォームレイアウト*/
@@ -89,6 +89,30 @@ h1 {
 
 /*備品一覧*/
 
+/*検索画面遷移ボタン*/
+.search-button{
+	background: #f4f6fb;
+	padding: 8px 18px;
+}
+
+.h3-area{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+}
+
+/*ソートボタン*/
+.sort_button{	
+	font-size: 14px;
+	padding: 5px 10px;
+	background: none;
+	border: none;
+	padding: 4px 0;
+	cursor: pointer;
+
+}
+
 .header {
     display: flex;
     border-bottom: 2px solid #000;
@@ -112,6 +136,7 @@ span {
 
 .name{
 	width: 300px;
+	text-align: left;
 }
 
 .rental{
@@ -123,3 +148,61 @@ span {
 	width: 100px;
 	text-align: center;
 }
+
+/*検索画面*/
+
+/*検索入力*/
+.search-form{
+	padding: 5px 12px;
+}
+
+.search-form-id{
+	padding: 5px 12px;
+	width: 70px;
+}
+
+.search-form-use{
+	padding: 5px 12px;
+	width: 30px;
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+/*検索ボタン*/
+.center{
+	text-align:center;
+}
+
+/*検索結果*/
+.search-area{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.result-id{
+	width: 35px;
+}
+
+.result-name{
+	width: 280px;
+	text-align: left;
+}
+
+.result-rental{
+	width: 70px;
+	text-align: center;
+}
+
+.result-num{
+	width: 100px;
+	text-align: center;
+}
+
+/*戻るボタン*/
+.right{
+	text-align:right;
+}
+

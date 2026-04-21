@@ -27,8 +27,31 @@ public class SqlConst {
 											+ "INNER JOIN usenum "
 											+ "ON bihininfo.id = usenum.id ";
 	
+	// 備品が登録されているかどうか
+	public static final String SQL_REGISTER = "SELECT 1 FROM bihininfo WHERE name = ?";
+	
+	// プレースホルダ
+	public static final int NAME_COLUMN = 1;
+    public static final int RENTAL_COLUMN = 2;
+    public static final int ID_COLUMN = 1;
+	
 	// ソート
 	public static final String SQL_SORT = "ORDER BY ";
+	
+	// 検索
+	public static final String SQL_WHERE = "WHERE 1=1 ";
+	
+	// 検索用チェックボックス（貸出可能）
+	public static final String SQL_RENTAL_TRUE = "1";
+	
+	// 検索用チェックボックス（貸出中）
+	public static final String SQL_RENTAL_FALSE = "0";
+	
+	// 検索用（使用回数.以上
+	public static final String SQL_USE_UP = ">=";
+	
+	// 検索用（使用回数.以上
+	public static final String SQL_USE_DOWN = "<=";
 	
 	// id
 	public static final String SQL_ID = "bihininfo.id ";

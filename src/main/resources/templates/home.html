@@ -22,19 +22,31 @@
 		<button type="submit" class="button" name ="register">登録</button>
 		<button type="submit" class="button" name="rental">貸出</button>
 		<button type="submit" class="button" name="bihinReturn">返却</button>
-		<button type="submit" class="button" name="delete">削除</button>
+		<button type="submit" class="button" name="delete" id="mybtn">削除</button>
+		
+		<script>
+		function deleteClick(){
+		    let check = confirm('この備品を削除します。よろしいですか？');
+		}
+
+		let button = document.getElementById('mybtn');
+		button.addEventListener('click', deleteClick);
+		</script>
 		</div><br>
 		
 		<!--メッセージ表示-->
 		<p class="result-area" th:if="${message != null}"
 							   th:text="${message}"></p>
+							   
+		<div class ="h3-area">
+			<h3>備品一覧</h3>
+			<button type="button" onclick="location.href='http://localhost:8080/search'" name="searchform" class="button search-button">検索</button><br>
+		</div>
 		
-		<h3>備品一覧</h3>
-		
-		<button type="submit" class ="sort_button" name="sort" value="id"formnovalidate>id</button>
-		<button type="submit" class ="sort_button" name="sort" value="bihinName" formnovalidate>名称</button>
-		<button type="submit" class ="sort_button" name="sort" value="bihinRental" formnovalidate>状態</button>
-		<button type="submit" class ="sort_button" name="sort" value="bihinUse" formnovalidate>使用回数</button>
+		<button type="submit" class ="sort_button id" name="sort" value="id"formnovalidate>ID</button>
+		<button type="submit" class ="sort_button name" name="sort" value="bihinName" formnovalidate>名称</button>
+		<button type="submit" class ="sort_button rental" name="sort" value="bihinRental" formnovalidate>状態</button>
+		<button type="submit" class ="sort_button num" name="sort" value="bihinUse" formnovalidate>使用回数</button>
 		
 		<input type="hidden" name="hidden_nowSort" th:value="${nowSort}">
 		<input type="hidden" name="hidden_beforeSort" th:value="${beforeSort}">
@@ -42,9 +54,10 @@
 		<div class="row" th:each="list : ${datalist}">
 			<span class="id" th:text="${list.id}"></span>
 		    <span class="name" th:text="${list.name}"></span>
-			<span class="rental" th:text="${list.rental} ? '貸出可能' : '貸出中'"></span>
+			<span class="rental" th:text="${list.rental ? '貸出可能' : '貸出中'}"></span>
 			<span class="num" th:text="${list.num + '回'}"></span>
 		</div>
+		
 	</form>
 	</div>
 	</div>

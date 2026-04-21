@@ -40,7 +40,7 @@ public class ControllerHome {
 			String message = "登録が完了しました";
 			model.addAttribute("message", message);
 		
-		} else if(result == BihinConst.RESULT_NUM) {
+		} else if(result == BihinConst.INPUT_NG) {
 			String message = "30文字以内で入力してください";
 			model.addAttribute("message", message);
 			
@@ -75,8 +75,12 @@ public class ControllerHome {
 			String message = "貸出せません";
 			model.addAttribute("message", message);
 		
-		} else if(result == BihinConst.RESULT_NUM) {
+		} else if(result == BihinConst.INPUT_NG) {
 			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.REGISTER_NG) {
+			String message = "備品登録されていません";
 			model.addAttribute("message", message);
 			
 		} else if(result == BihinConst.RESULT_ERROR) {
@@ -110,8 +114,12 @@ public class ControllerHome {
 			String message = "返却できません";
 			model.addAttribute("message", message);
 			
-		} else if(result == BihinConst.RESULT_NUM) {
+		} else if(result == BihinConst.INPUT_NG) {
 			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.REGISTER_NG) {
+			String message = "備品登録されていません";
 			model.addAttribute("message", message);
 			
 		} else if(result == BihinConst.RESULT_ERROR) {
@@ -145,8 +153,12 @@ public class ControllerHome {
 			String message = "削除できません";
 			model.addAttribute("message", message);
 			
-		} else if(result == BihinConst.RESULT_NUM) {
+		} else if(result == BihinConst.INPUT_NG) {
 			String message = "30文字以内で入力してください";
+			model.addAttribute("message", message);
+			
+		} else if(result == BihinConst.REGISTER_NG) {
+			String message = "備品登録されていません";
 			model.addAttribute("message", message);
 			
 		} else if(result == BihinConst.RESULT_ERROR) {
