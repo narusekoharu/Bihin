@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 public class ControllerSearch{
 	
@@ -120,7 +121,7 @@ public class ControllerSearch{
 		}else {
 			// メッセージを設定する
 			String message = "検索条件に不備があります";
-			model.addAttribute("list_message", message);
+			model.addAttribute("search_message", message);
 			model.addAttribute("datalist", new ArrayList<BihinData>());
 		}
 	return "search";

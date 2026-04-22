@@ -71,6 +71,7 @@ public class CommonDB {
 		int nameCheck = BihinConst.INPUT_OK;
 		
 		try {
+			// 文字数を比較してフラグを変える
 			if(name.length() > BihinConst.NAME_LENGTH) {
 				nameCheck = BihinConst.INPUT_NG;
 			}
@@ -85,6 +86,7 @@ public class CommonDB {
 		int idCheck = BihinConst.INPUT_OK;
 		
 		try {
+			// 文字数を比較してフラグを変える
 			if(id.length() > BihinConst.ID_LENGTH) {
 				idCheck = BihinConst.INPUT_NG;
 			}
@@ -99,6 +101,7 @@ public class CommonDB {
 		int useCheck = BihinConst.INPUT_OK;
 		
 		try {
+			// 文字数を比較してフラグを変える
 			if(num.length() > BihinConst.USE_LENGTH) {
 				useCheck = BihinConst.INPUT_NG;
 			}
@@ -112,10 +115,15 @@ public class CommonDB {
 	public int idNumCheck(String id) {
 		int idNumCheck = BihinConst.INPUT_OK;
 		
-		for(int i= 0; i < id.length(); i++) {
-			if(!Character.isDigit(id.charAt(i))) {
-				idNumCheck = BihinConst.INPUT_NG;
+		try {
+			// 一文字ずつ確認し、数字ではなかったら、フラグを変える
+			for(int i= 0; i < id.length(); i++) {
+				if(!Character.isDigit(id.charAt(i))) {
+					idNumCheck = BihinConst.INPUT_NG;
+				}
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 		return idNumCheck;
 	}
@@ -124,10 +132,15 @@ public class CommonDB {
 	public int useNumCheck(String num) {
 		int useNumCheck = BihinConst.INPUT_OK;
 		
-		for(int i= 0; i < num.length(); i++) {
-			if(!Character.isDigit(num.charAt(i))) {
-				useNumCheck = BihinConst.INPUT_NG;
+		try {
+			// 一文字ずつ確認し、数字ではなかったら、フラグを変える
+			for(int i= 0; i < num.length(); i++) {
+				if(!Character.isDigit(num.charAt(i))) {
+					useNumCheck = BihinConst.INPUT_NG;
+				}
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 		return useNumCheck;
 	}
@@ -143,7 +156,8 @@ public class CommonDB {
 			PreparedStatement ps = con.prepareStatement(SqlConst.SQL_REGISTER);
 			ps.setString(SqlConst.NAME_COLUMN, name);
 			ResultSet rs = ps.executeQuery();
-
+			
+			// 登録されていなかったら、フラグを変える
 			if (!rs.next()) {
 				registerCheck = BihinConst.REGISTER_NG;
 			}

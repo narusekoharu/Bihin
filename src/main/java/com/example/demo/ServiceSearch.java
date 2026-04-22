@@ -67,7 +67,7 @@ public class ServiceSearch {
     			search_sql = search_sql + " AND " + SqlConst.SQL_NUM + SqlConst.SQL_USE_DOWN + Integer.parseInt(searchUseNum);
     		}
     		
-    		System.out.println(search_sql);
+    		
     		
     		ps = con.prepareStatement(search_sql);
 			
