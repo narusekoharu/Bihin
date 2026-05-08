@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
+// 検索画面
 @Controller
 public class ControllerSearch{
-	
-	// 共通処理インスタンス化
-    @Autowired
-    private CommonDB db;
     
     // Service側インスタンス化
  	@Autowired
      private ServiceSearch service;
+ 	
+ 	// 共通化処理インスタンス化
+    @Autowired
+    private  CommonDB db;
 	
 	 // 初期画面
 	@GetMapping("/search")
@@ -36,67 +36,61 @@ public class ControllerSearch{
 	public String searchBihin(@ModelAttribute("searchData") SearchData searchData,
 							  Model model) {
 
-		
 		// 入力チェックを示す変数
 		int input = BihinConst.INPUT_OK;
 		
+		// エラーメッセージ用
+		List<String> errorMessage = new ArrayList<String>();
+
 		// IDの桁数チェック
-		int idCheck = db.idCheck(searchData.getSearchId());
-	
+		int idCheck = service.lengthCheck(searchData.getSearchId(), BihinConst.ID_LENGTH);
 		if(idCheck == BihinConst.INPUT_NG) {
-			String message = "IDは3桁以内で入力してください";
-			model.addAttribute("message_id", message);
+			errorMessage.add(MessageConst.ID_CHECK);
 			input = BihinConst.INPUT_NG;
 		}
 		
 		// IDが数字のみかチェック
-		int idNumCheck = db.idNumCheck(searchData.getSearchId());
+		int idNumCheck = service.numCheck(searchData.getSearchId());
 		if(idNumCheck == BihinConst.INPUT_NG ) {
-			String message = "IDは全て数字で入力してください";
-			model.addAttribute("message_id_num", message);
+			errorMessage.add(MessageConst.ID_NUM_CHECK);
 			input = BihinConst.INPUT_NG;
 		}
 	
 		// 備品名の文字数チェック
-		int nameCheck = db.nameCheck(searchData.getSearchName());
-		
+		int nameCheck = service.lengthCheck(searchData.getSearchName(), BihinConst.NAME_LENGTH);
 		if(nameCheck == BihinConst.INPUT_NG) {
-			String message = "備品名は30文字以内で入力してください";
-			model.addAttribute("message_name", message);
+			errorMessage.add(MessageConst.NAME_CHECK);
 			input = BihinConst.INPUT_NG;
 		}
 		
 		// 使用回数の桁数チェック
-		int useCheck = db.useCheck(searchData.getSearchUseNum());
-		
+		int useCheck = service.lengthCheck(searchData.getSearchUseNum(), BihinConst.USE_LENGTH);
 		if(useCheck == BihinConst.INPUT_NG) {
-			String message = "使用回数は3桁以内で入力してください";
-			model.addAttribute("message_use", message);
+			errorMessage.add(MessageConst.USE_CHECK);
 			input = BihinConst.INPUT_NG;
 		}
 		
 		// 使用回数が数字のみかチェック
-		int useNumCheck = db.useNumCheck(searchData.getSearchUseNum());
-		
+		int useNumCheck = service.numCheck(searchData.getSearchUseNum());	
 		if(useNumCheck == BihinConst.INPUT_NG) {
-			String message = "使用回数は全て数字で入力してください";
-			model.addAttribute("message_use_num", message);
+			errorMessage.add(MessageConst.USE_NUM_CHECK);
 			input = BihinConst.INPUT_NG;
 		}
 		
 		// ラジオボタンが押されていない場合
 		if(!(searchData.getSearchUseNum() == "") && searchData.getSearchUseRadio() == null) {
-			String message = "「以上」か「以下」か選んでください";
-			model.addAttribute("message_use_nopush", message);
+			errorMessage.add(MessageConst.USE_RADIO_CHECK);
 			input = BihinConst.INPUT_NG;	
 		}
 		
 		// ラジオボタンのみ押されている場合
 		if(searchData.getSearchUseNum() == "" && !(searchData.getSearchUseRadio() == null)) {
-			String message = "使用回数を入力してください";
-			model.addAttribute("message_use_push", message);
+			errorMessage.add(MessageConst.USE_NO_NUM_CHECK);
 			input = BihinConst.INPUT_NG;	
 		}
+		
+		// エラーメッセージを設定する
+		model.addAttribute("error_message", errorMessage);
 		
 		// 検索条件が正しい場合、リストを受け取る。
 		if(input == BihinConst.INPUT_OK) {
@@ -112,7 +106,7 @@ public class ControllerSearch{
 			// リストが空か判別する
 			if(searchedList.isEmpty()) {
 				// 空の場合メッセージを設定する
-				String message = "該当する備品がありませんでした";
+				String message = MessageConst.BIHIN_EMPTY;
 				model.addAttribute("list_message", message);
 			}else {
 				// 該当する備品一覧を設定する
@@ -120,11 +114,15 @@ public class ControllerSearch{
 			}	
 		}else {
 			// メッセージを設定する
-			String message = "検索条件に不備があります";
+			String message = MessageConst.BIHIN_NG;
 			model.addAttribute("search_message", message);
 			model.addAttribute("datalist", new ArrayList<BihinData>());
 		}
-	return "search";
+		
+		// DBを閉じる
+		db.databaseClose();	
+		
+		return "search";
 	}
 }
 	

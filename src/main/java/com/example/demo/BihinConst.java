@@ -9,17 +9,23 @@ public class BihinConst {
 	// 処理不可能
 	public static final int RESULT_NG = 0;
 	
-	// 入力チェック成功フラグ
-	public static final int INPUT_OK = 2;
+	// 例外エラーが発生した場合
+	public static final int RESULT_ERROR = 9;
 	
 	// 入力チェック失敗フラグ
-	public static final int INPUT_NG = 3;
+	public static final int CHECK_OK = 1;
 	
-	// 登録チェック成功フラグ
-	public static final int REGISTER_OK = 4;
+	// 入力チェック失敗フラグ
+	public static final int CHECK_INPUT_NG = 2;
 	
-	// 登録チェック成功フラグ
-	public static final int REGISTER_NG = 5;
+	// 登録チェック失敗フラグ
+	public static final int CHECK_REGISTER_NG= 3;
+	
+	// 入力チェック成功フラグ
+	public static final int INPUT_OK = 1;
+	
+	// 入力チェック失敗フラグ
+	public static final int INPUT_NG = 0;
 	
 	// 備品名30文字
 	public static final int NAME_LENGTH = 30;
@@ -29,9 +35,6 @@ public class BihinConst {
 	
 	// 使用回数3桁
 	public static final int USE_LENGTH = 3;
-	
-	// 例外エラーが発生した場合
-	public static final int RESULT_ERROR = 9;
 	
 	
 	// 昇順の場合

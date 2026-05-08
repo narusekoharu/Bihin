@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// 検索画面
 @Service
 public class ServiceSearch {
 	
@@ -16,6 +17,7 @@ public class ServiceSearch {
     @Autowired
     private CommonDB db;
     
+  
     // 検索機能
     public List<BihinData> searchBihin(String searchedId, 
     								   String searchedName, 
@@ -25,51 +27,63 @@ public class ServiceSearch {
     								   String searchUseRadio){
     	
     	List<BihinData> searchedList = new ArrayList<>();
-    	
+
     	try {
     		// DBを繋げる
     		Connection con = db.databaseConnection();
-    		
-    		PreparedStatement ps = null;
     		
     		String search_sql = SqlConst.SQL_INNER_JOIN + SqlConst.SQL_WHERE;
     		
     		// ID検索がある場合
     		if(!(searchedId == "")) {
-    			search_sql = search_sql + " AND " + SqlConst.SQL_ID + "= " + Integer.parseInt(searchedId);
+    			search_sql = search_sql + " AND " + SqlConst.SQL_ID + "= ?";
     		}
     		
     		// 備品検索がある場合
     		if(!(searchedName == "")) {
-    			search_sql = search_sql + " AND " + SqlConst.SQL_NAME + " LIKE '%"+ searchedName + "%' ";
+    			search_sql = search_sql + " AND " + SqlConst.SQL_NAME + " LIKE ? ";
     		}
 
     		// 貸出可能も貸出中も状態検索がある場合
-    		if((!(searchRentalTrue == null))&&(!(searchRentalFalse == null))) {
+    		if((searchRentalTrue == true)&&(searchRentalFalse == true)) {
     			search_sql = SqlConst.SQL_INNER_JOIN + SqlConst.SQL_WHERE;
     		
     		// 貸出可能状態検索がある場合	
-    		}else if(!(searchRentalTrue == null)) {
+    		}else if(searchRentalTrue == true) {
     			search_sql = search_sql + " AND " + SqlConst.SQL_RENTAL + " = " + SqlConst.SQL_RENTAL_TRUE;
     			
     		// 貸出中状態検索がある場合
-    		}else if(!(searchRentalFalse == null)) {
+    		}else if(searchRentalFalse == true) {
     			search_sql = search_sql + " AND " + SqlConst.SQL_RENTAL + " = " + SqlConst.SQL_RENTAL_FALSE;
     		}
     		
     		// 使用回数検索がある場合（以上）
     		if((!(searchUseNum == "")) && searchUseRadio.equals("up")) {
-    			search_sql = search_sql + " AND " + SqlConst.SQL_NUM + SqlConst.SQL_USE_UP + Integer.parseInt(searchUseNum);
+    			search_sql = search_sql + " AND " + SqlConst.SQL_USE + SqlConst.SQL_USE_UP + " ? ";
     		}
     		
     		// 使用回数検索がある場合（以下）
     		if((!(searchUseNum == "")) && searchUseRadio.equals("down")) {
-    			search_sql = search_sql + " AND " + SqlConst.SQL_NUM + SqlConst.SQL_USE_DOWN + Integer.parseInt(searchUseNum);
+    			search_sql = search_sql + " AND " + SqlConst.SQL_USE + SqlConst.SQL_USE_DOWN + " ? ";
     		}
     		
+    		PreparedStatement ps = con.prepareStatement(search_sql);
     		
+    		// プレースホルダにいれていく
+    		int i = 1;
     		
-    		ps = con.prepareStatement(search_sql);
+    		if(!(searchedId == "")) {
+    			ps.setInt(i++, Integer.parseInt(searchedId));
+    		}
+    		if(!(searchedName == "")) {
+    			ps.setString(i++, "%" + searchedName + "%");
+    		}
+    		if((!(searchUseNum == "")) && searchUseRadio.equals("up")) {
+    			ps.setInt(i++, Integer.parseInt(searchUseNum));
+    		}
+    		if((!(searchUseNum == "")) && searchUseRadio.equals("down")) {
+    			ps.setInt(i++, Integer.parseInt(searchUseNum));
+    		}
 			
 			// 検索実行する
 			ResultSet rs = ps.executeQuery();
@@ -83,11 +97,36 @@ public class ServiceSearch {
 				BihinData data = new BihinData(wkID, wkName, wkRental, wkNum);
 				searchedList.add(data);
 			}
+			
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
     	return searchedList;
     }
-
-
+    
+    // 文字数チェック
+    public int lengthCheck(String some, int maxlength) {
+    	int lengthCheck = BihinConst.INPUT_OK;
+    	
+    	// 文字数を比較してフラグを変える
+    	if(some.length() > maxlength) {
+    		lengthCheck = BihinConst.INPUT_NG;
+    	}
+    	return lengthCheck;
+    }
+    
+    // 数字のみかチェック
+    public int numCheck(String some) {
+    	int numCheck = BihinConst.INPUT_OK;
+    	
+    	// 一文字ずつ確認し、数字ではなかったら、フラグを変える
+    	for(int i = 0; i < some.length(); i++) {
+    		if(!Character.isDigit(some.charAt(i))) {
+    			numCheck = BihinConst.INPUT_NG;
+    		}
+    	}
+    	return numCheck;
+    }
 }
+
+

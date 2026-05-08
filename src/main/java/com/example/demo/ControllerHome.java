@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// ホーム画面
 @Controller
 public class ControllerHome {
 	
@@ -20,10 +21,15 @@ public class ControllerHome {
 
     // 初期画面
 	@GetMapping("/home")
-	public String start(Model model) {
+	public String start(@RequestParam(value = "hidden_nowSort", defaultValue = "1") String nowSort,
+						@RequestParam(value = "hidden_beforeSort", defaultValue = "id") String beforeSort,
+						Model model) {
 		
-		model.addAttribute("datalist", db.bihinList());
-		
+	    model.addAttribute("nowSort", nowSort);
+	    model.addAttribute("beforeSort", beforeSort);
+	    
+	    model.addAttribute("datalist", service.bihinList());
+	
 		return "home";
 	}
 	
@@ -32,25 +38,36 @@ public class ControllerHome {
 	public String register(@RequestParam("name") String name,
 						   Model model) {
 		
-		//登録処理を呼び出して、戻り値EXISTを受け取る
-		int result = service.register(name);
-			
-		// 状況に応じてメッセージを設定する
-		if(result == BihinConst.RESULT_OK) {
-			String message = "登録が完了しました";
-			model.addAttribute("message", message);
+		String message = "";
 		
-		} else if(result == BihinConst.INPUT_NG) {
-			String message = "30文字以内で入力してください";
-			model.addAttribute("message", message);
+		// 文字数バリデーション
+		int validationResult = service.lengthCheck(name);
+		
+		// 31文字以上ならメッセージを定める
+		if(validationResult == BihinConst.CHECK_INPUT_NG) {
+			message = MessageConst.NAME_NUM_NG;
+		}
+
+		// バリデーションが通れば、登録処理を呼び出す
+		if(validationResult == BihinConst.CHECK_OK) {
+			int result = service.register(name);
 			
-		} else if(result == BihinConst.RESULT_ERROR) {
-			String message = "予期せぬエラーが発生しました";
-			model.addAttribute("message", message);
+			// 状況に応じてメッセージを定める
+			switch(result) {
+				case BihinConst.RESULT_OK:
+					message = MessageConst.RESULT_OK_REGISTER;
+					break;
+				case BihinConst.RESULT_ERROR:
+					message = MessageConst.RESULT_ERROR_MESSAGE;
+					break;
+			}
 		}
 		
+		// メッセージ設定
+		model.addAttribute("message", message);	
+		
 		// 備品一覧を設定
-		model.addAttribute("datalist", db.bihinList());
+		model.addAttribute("datalist", service.bihinList());
 					
 		// DBを閉じる
 		db.databaseClose();
@@ -63,33 +80,43 @@ public class ControllerHome {
 	public String rental(@RequestParam("name") String name,
 						 Model model) {
 		
-		// 貸出処理を呼び出して、戻り値EXISTを受け取る
-		int result = service.rental(name);
+		String message = "";
 		
-		// 状況に応じてメッセージを設定する
-		if(result == BihinConst.RESULT_OK) {
-			String message = "貸出しました";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_NG) {
-			String message = "貸出せません";
-			model.addAttribute("message", message);
+		// バリデーションチェック
+		int validationResult = service.registerCheck(name);
 		
-		} else if(result == BihinConst.INPUT_NG) {
-			String message = "30文字以内で入力してください";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.REGISTER_NG) {
-			String message = "備品登録されていません";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_ERROR) {
-			String message = "予期せぬエラーが発生しました";
-			model.addAttribute("message", message);
+		// 状況に応じてメッセージを定める
+		switch(validationResult) {
+			case BihinConst.CHECK_INPUT_NG:
+				message = MessageConst.NAME_NUM_NG;
+				break;
+			case BihinConst.CHECK_REGISTER_NG:
+				message = MessageConst.REGISTER_NG;
+				break;			
 		}
 		
+		// バリデーションが通れば、貸出処理を呼び出す
+		if(validationResult == BihinConst.CHECK_OK) {
+			int result = service.rental(name);
+			
+			// 状況に応じてメッセージを定める
+			switch(result) {
+				case BihinConst.RESULT_OK:
+					message = MessageConst.RESULT_OK_RENTAL;
+					break;
+				case BihinConst.RESULT_NG:
+					message = MessageConst.RESULT_NG_RENTAL;
+					break;
+				case BihinConst.RESULT_ERROR:
+					message = MessageConst.RESULT_ERROR_MESSAGE;
+			}
+		}
+		
+		// メッセージ設定
+		model.addAttribute("message", message);
+		
 		// 備品一覧を設定
-		model.addAttribute("datalist", db.bihinList());
+		model.addAttribute("datalist", service.bihinList());
 		
 		// DBを閉じる
 		db.databaseClose();
@@ -101,34 +128,44 @@ public class ControllerHome {
 	@PostMapping(path = "/home", params = "bihinReturn")
 	public String bihinReturn(@RequestParam("name") String name,
 							  Model model) {
+
+		String message = "";
 		
-		// 返却処理を呼び出して、戻り値EXISTを受け取る
-		int result = service.bihinReturn(name);
+		// バリデーションチェック
+		int validationResult = service.registerCheck(name);
 		
-		// 状況に応じてメッセージを設定する
-		if(result == BihinConst.RESULT_OK) {
-			String message = "返却しました";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_NG) {
-			String message = "返却できません";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.INPUT_NG) {
-			String message = "30文字以内で入力してください";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.REGISTER_NG) {
-			String message = "備品登録されていません";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_ERROR) {
-			String message = "予期せぬエラーが発生しました";
-			model.addAttribute("message", message);
+		// 状況に応じてメッセージを定める
+		switch(validationResult) {
+			case BihinConst.CHECK_INPUT_NG:
+				message = MessageConst.NAME_NUM_NG;
+				break;
+			case BihinConst.CHECK_REGISTER_NG:
+				message = MessageConst.REGISTER_NG;
+				break;			
 		}
 		
+		// バリデーションが通れば、返却処理を呼び出す
+		if(validationResult == BihinConst.CHECK_OK) {
+			int result = service.bihinReturn(name);
+			
+			// 状況に応じてメッセージを定める
+			switch(result) {
+				case BihinConst.RESULT_OK:
+					message = MessageConst.RESULT_OK_RETURN;
+					break;
+				case BihinConst.RESULT_NG:
+					message = MessageConst.RESULT_NG_RETURN;
+					break;
+				case BihinConst.RESULT_ERROR:
+					message = MessageConst.RESULT_ERROR_MESSAGE;
+			}
+		}
+		
+		// メッセージ設定
+		model.addAttribute("message", message);
+		
 		// 備品一覧を設定
-		model.addAttribute("datalist", db.bihinList());
+		model.addAttribute("datalist", service.bihinList());
 		
 		// DBを閉じる
 		db.databaseClose();
@@ -141,33 +178,43 @@ public class ControllerHome {
 	public String delete(@RequestParam("name") String name,
 						 Model model) {
 		
-		// 返却処理を呼び出して、戻り値EXISTを受け取る
-		int result = service.delete(name);
+		String message = "";
 		
-		// 状況に応じてメッセージを設定する
-		if(result == BihinConst.RESULT_OK) {
-			String message = "削除しました";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_NG) {
-			String message = "削除できません";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.INPUT_NG) {
-			String message = "30文字以内で入力してください";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.REGISTER_NG) {
-			String message = "備品登録されていません";
-			model.addAttribute("message", message);
-			
-		} else if(result == BihinConst.RESULT_ERROR) {
-			String message = "予期せぬエラーが発生しました";
-			model.addAttribute("message", message);
+		// バリデーションチェック
+		int validationResult = service.registerCheck(name);
+		
+		// 状況に応じてメッセージを定める
+		switch(validationResult) {
+			case BihinConst.CHECK_INPUT_NG:
+				message = MessageConst.NAME_NUM_NG;
+				break;
+			case BihinConst.CHECK_REGISTER_NG:
+				message = MessageConst.REGISTER_NG;
+				break;			
 		}
+		
+		// バリデーションが通れば、削除処理を呼び出す
+		if(validationResult == BihinConst.CHECK_OK) {
+			int result = service.delete(name);
+			
+			// 状況に応じてメッセージを定める
+			switch(result) {
+				case BihinConst.RESULT_OK:
+					message = MessageConst.RESULT_OK_DELETE;
+					break;
+				case BihinConst.RESULT_NG:
+					message = MessageConst.RESULT_NG_DELETE;
+					break;
+				case BihinConst.RESULT_ERROR:
+					message = MessageConst.RESULT_ERROR_MESSAGE;
+			}
+		}
+		
+		// メッセージ設定
+		model.addAttribute("message", message);
 				
 		// 備品一覧を設定
-		model.addAttribute("datalist", db.bihinList());
+		model.addAttribute("datalist", service.bihinList());
 			
 		// DBを閉じる
 		db.databaseClose();
@@ -191,12 +238,7 @@ public class ControllerHome {
 			}else if(BihinConst.SORT_DESC.equals(nowSort)) {
 				nowSort = BihinConst.SORT_ASC;
 			}
-			
-		// 初回idボタンだった場合
-		}else if(sort.equals("id") && nowSort.equals("")) {
-			nowSort = BihinConst.SORT_ASC;
-		
-		// 初回id以外の初回ボタンだった場合	
+		//  違うボタンだった場合
 		}else {
 			nowSort = BihinConst.SORT_DESC;
 		}

@@ -29,8 +29,9 @@ public class SqlConst {
 	
 	// 備品が登録されているかどうか
 	public static final String SQL_REGISTER = "SELECT 1 FROM bihininfo WHERE name = ?";
+
 	
-	// プレースホルダ
+	// プレースホルダの番号
 	public static final int NAME_COLUMN = 1;
     public static final int RENTAL_COLUMN = 2;
     public static final int ID_COLUMN = 1;
@@ -63,7 +64,7 @@ public class SqlConst {
 	public static final String SQL_RENTAL = "bihininfo.rental ";
 	
 	// 使用回数
-	public static final String SQL_NUM = "usenum.num ";
+	public static final String SQL_USE = "usenum.num ";
 	
 	// 昇順
 	public static final String SQL_ASC = "ASC";

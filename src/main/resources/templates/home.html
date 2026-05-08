@@ -1,9 +1,10 @@
+<!--ホーム画面-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<link th:href="@{/css/content.css}" rel = "stylesheet">
-<meta charset="UTF-8">
-<title>備品管理</title>
+	<meta charset="UTF-8">
+	<title>備品管理</title>
 </head>
 <body>
 	
@@ -13,26 +14,17 @@
 		
 		<h1>備品管理</h1>
 		
-		<!--備品入力欄-->
 		<div class="area">
-		<input 	type="text" class = "form" name="name" placeholder="備品名を入力してください" required>
-		
-		<!--登録・貸出・返却・削除ボタン-->
-		
-		<button type="submit" class="button" name ="register">登録</button>
-		<button type="submit" class="button" name="rental">貸出</button>
-		<button type="submit" class="button" name="bihinReturn">返却</button>
-		<button type="submit" class="button" name="delete" id="mybtn">削除</button>
-		
-		<script>
-		function deleteClick(){
-		    let check = confirm('この備品を削除します。よろしいですか？');
-		}
-
-		let button = document.getElementById('mybtn');
-		button.addEventListener('click', deleteClick);
-		</script>
-		</div><br>
+			<!--備品入力欄-->
+			<input 	type="text" class = "form" name="name" placeholder="備品名を入力してください" required>
+			
+			<!--登録・貸出・返却・削除ボタン-->
+			
+			<button type="submit" class="button" name ="register">登録</button>
+			<button type="submit" class="button" name="rental">貸出</button>
+			<button type="submit" class="button" name="bihinReturn">返却</button>
+			<button type="submit" class="button" name="delete" id="mybtn">削除</button>
+		</div>
 		
 		<!--メッセージ表示-->
 		<p class="result-area" th:if="${message != null}"
@@ -61,5 +53,17 @@
 	</form>
 	</div>
 	</div>
+	<script>
+		function deleteClick(event){
+			// キャンセルならフォームを送信しない
+		    if (!confirm('この備品を削除します。よろしいですか？')) {
+		      event.preventDefault();
+		      return;
+		    }
+		  }
+
+		let deleteButton = document.getElementById('mybtn');
+		deleteButton.addEventListener('click', deleteClick);
+	</script>	
 </body>
 </html>
